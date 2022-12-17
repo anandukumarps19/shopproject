@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    {% if catergory %}
+        {{catergory.description|truncatewords:150}}
+    {% else %}
+        Welcome To Our Shop
+    {% endif %}
+{% endblock %}
+
+{% block title %}
+    {% if category %}
+        {{title.name}}-Our Collections
+    {% else %}
+        See Our New Collections
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    {% if category %}
+    <div class="row my_row_class">
+        <div class="mx_auto">
+            <p>
+                <a href="{% url 'shopapp:allProdCat' %}">Product Collections</a>
+            </p>
+        </div>
+    </div>
+    {% endif %}
+    <div class="mx_auto">
+        {% if category %}
+        <img class="my_image" src="{{category.image.url}}" alt="{{category.name}}" height="50px" width="50px">
+    </div>
+    <div>
+        <h3 class="text-center my_title">{{cateogry.name}}</h3>
+        <p class="text-justify">{{category.description}}</p>
+    </div>
+    {% else %}
+    <div>
+        <img class="my_image my_image_padding" src="{% static 'img/ban.jpg' %}" alt="banner">
+    </div>
+    <div>
+        <h1>
+            <center>
+                Our Collections
+            </center>
+
+        </h1>
+        <p class="text-center">
+            It is just an example of an e-commerce website <br>
+            This is one of the best E-commerce website for customers and here all types of products are available<br>
+            We have a lot of products collections are here
+        </p>
+    </div>
+    {% endif %}
+<div class="container">
+    <div class="row mx_auto">
+        {% for i in products.object_list %}
+        <div class="my_bottom_margin col-9 col-sm-12 col-md-4 col-lg-4">
+            <div class="card text-center" style="min-width:18rem;">
+                <a href="{{i.get_url}}"><img src="{{i.image.url}}" alt="image.name" height="100px" width="100px"></a>
+                <div class="card-body">
+                    <h3>{{i.name}}</h3>
+                    <p>{{i.Price}}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="mx_auto">
+        {% if products.paginator.num_pages > 1 %}
+        <div class="text-right">
+            {% for pg in products.paginator.page_range %}
+                <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    <br>
+</div>
+{% endblock %}
+
